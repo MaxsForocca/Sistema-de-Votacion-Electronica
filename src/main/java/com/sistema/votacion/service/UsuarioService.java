@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.sistema.votacion.repository.UsuarioRepository;
 import com.sistema.votacion.dto.UsuarioDTO;
+import com.sistema.votacion.dto.LoginDTO;
 import org.modelmapper.ModelMapper;
 import com.sistema.votacion.model.Usuario;
 
@@ -34,6 +35,21 @@ public class UsuarioService {
             usuarioRepository.save(usuario);
         } catch (Exception e) {
             throw new RuntimeException("Error al registrar el usuario: " + e.getMessage());
+        }
+    }
+
+    public boolean autenticar(LoginDTO dto) {
+        try {
+            /*
+            return usuarioRepository
+                .findByUsernameAndPassword(dto.getUsername(), dto.getPassword())
+                .isPresent();
+            */
+            return usuarioRepository.findByUsername(dto.getUsername())
+                .map(usuario -> usuario.getPassword().equals(dto.getPassword()))
+                .orElse(false);
+        } catch (Exception e) {
+            throw new RuntimeException("Error al iniciar sesión: " + e.getMessage());
         }
     }
 }

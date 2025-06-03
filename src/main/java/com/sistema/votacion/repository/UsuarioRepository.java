@@ -17,4 +17,12 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
      * @return Un Optional que contiene el Usuario si se encuentra, o vacío si no.
      */
     Optional<Usuario> findByUsernameAndPassword(String username, String password);
+
+    /**
+     * Busca un usuario por su nombre de usuario.
+     *
+     * @param username Nombre de usuario.
+     * @return Un Usuario si se encuentra, o null si no.
+     */
+    Optional<Usuario> findByUsername(String username);
 }

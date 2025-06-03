@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import com.sistema.votacion.dto.UsuarioDTO;
+import com.sistema.votacion.dto.LoginDTO;
 //import com.sistema.votacion.model.Usuario;
 import com.sistema.votacion.service.UsuarioService;
 
@@ -34,12 +35,21 @@ public class UsuarioController {
         }
     }
     
-    /* 
+    
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO credenciales) {
-        //Logica de inicio de sesion
-        
-        return ResponseEntity.ok("Inicio de sesión exitoso");
+        try{
+            boolean result = usuarioService.autenticar(credenciales);
+            if (!result) {
+                // Si las credenciales son incorrectas, se retorna un mensaje de error
+                return ResponseEntity.status(401).body("Credenciales incorrectas");
+            } else {
+                return ResponseEntity.ok("Inicio de sesión exitoso");
+            }    
+        } catch (Exception e) {
+            // Si ocurre un error, se retorna un mensaje de error
+            return ResponseEntity.status(401).body("Error al iniciar sesión: " + e.getMessage());
+        }
     }  
-    */ 
+    
 }
