@@ -8,8 +8,10 @@ import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import lombok.Data;
 
 @Entity
+@Data
 public class Voto {
     
     @Id
