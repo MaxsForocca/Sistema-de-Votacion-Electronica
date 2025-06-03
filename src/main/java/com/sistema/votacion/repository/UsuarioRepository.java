@@ -9,7 +9,12 @@ import java.util.Optional;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
-    // Aquí puedes definir métodos personalizados si es necesario
-    // Por ejemplo, para buscar usuarios por nombre de usuario o correo electrónico
+    /**
+     * Busca un usuario por su nombre de usuario y contraseña.
+     *
+     * @param username Nombre de usuario.
+     * @param password Contraseña del usuario.
+     * @return Un Optional que contiene el Usuario si se encuentra, o vacío si no.
+     */
     Optional<Usuario> findByUsernameAndPassword(String username, String password);
 }

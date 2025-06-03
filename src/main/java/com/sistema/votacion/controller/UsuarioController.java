@@ -7,21 +7,31 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import com.sistema.votacion.dto.UsuarioDTO;
-import com.sistema.votacion.model.Usuario;
+//import com.sistema.votacion.model.Usuario;
 import com.sistema.votacion.service.UsuarioService;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/usuario")
 public class UsuarioController {
     
     @Autowired
     private UsuarioService usuarioService;
 
+    /**
+     * Endpoint para registrar un nuevo usuario, usa POST.
+     * 
+     * @param usuarioDTO Datos del usuario a registrar.
+     * @return ResponseEntity con mensaje de éxito.
+     */
     @PostMapping("/register")
     public ResponseEntity<?> registrarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
-        //Logica de registro de usuario
-        usuarioService.registrar(usuarioDTO);
-        return ResponseEntity.ok("Usuario registrado exitosamente");
+        try {
+            //Logica de registro de usuario
+            usuarioService.registrar(usuarioDTO);
+            return ResponseEntity.ok("Usuario registrado exitosamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error al registrar el usuario: " + e.getMessage());
+        }
     }
     
     /* 
