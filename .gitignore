@@ -19,3 +19,6 @@ buildNumber.properties
 # VSCode
 .VSCode/
 .vscode/
+
+# Data
+data/

@@ -17,6 +17,8 @@ public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     @Autowired
     private final ModelMapper modelMapper;
+    @Autowired
+    private final PasswordEncoder passwordEncoder; // Para codificar contraseñas
 
     /* Constructor */
     public UsuarioService(UsuarioRepository usuarioRepository, ModelMapper modelMapper) {
@@ -32,7 +34,14 @@ public class UsuarioService {
     public void registrar(UsuarioDTO dto) {
         try {
             Usuario usuario = modelMapper.map(dto, Usuario.class);
+            usuario.setPassword(passwordEncoder.encode(dto.getPassword())); // Codificar la contraseña
             usuarioRepository.save(usuario);
+            /*
+             * Usuario guardado = usuarioRepository.save(usuario);
+
+                return modelMapper.map(guardado, UsuarioDTO.class);// retorna el usuario guardado DTO
+             */
+
         } catch (Exception e) {
             throw new RuntimeException("Error al registrar el usuario: " + e.getMessage());
         }
