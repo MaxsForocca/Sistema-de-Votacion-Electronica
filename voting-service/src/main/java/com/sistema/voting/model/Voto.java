@@ -1,4 +1,4 @@
-package com.sistema.votacion.model;
+package com.sistema.voting.model;
 
 //import jakarta.annotation.Generated;
 import jakarta.persistence.Entity;
@@ -22,7 +22,7 @@ public class Voto {
     // Muchos votos pueden estar relacionados a un mismo usuario
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario usuario;
+    private Long usuario;
 
     // Muchos votos pueden estar relacionados a una misma votación
     @ManyToOne

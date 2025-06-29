@@ -1,4 +1,4 @@
-package com.sistema.votacion.model;
+package com.sistema.auth.model;
 
 //import jakarta.annotation.Generated;
 import jakarta.persistence.Column;

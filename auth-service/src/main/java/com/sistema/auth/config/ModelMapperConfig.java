@@ -1,4 +1,4 @@
-package com.sistema.votacion.config;
+package com.sistema.auth.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

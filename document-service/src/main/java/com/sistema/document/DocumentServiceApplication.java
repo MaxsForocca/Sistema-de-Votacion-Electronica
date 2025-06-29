@@ -1,12 +1,12 @@
-package com.sistema.votacion;
+package com.sistema.document;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SistemaVotacionApplication {
+public class DocumentServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SistemaVotacionApplication.class, args);
+        SpringApplication.run(DocumentServiceApplication.class, args);
     }
 }

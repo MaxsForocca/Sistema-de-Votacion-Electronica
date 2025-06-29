@@ -3,20 +3,16 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	
-    <!-- Parent: Heredar -->
+
     <parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.5</version>
-		<relativePath/>
-	</parent>
-    
-    <!-- Informacion del proyecto -->
-	<groupId>com.sistema</groupId>
-	<artifactId>sistema-votacion-electronica</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>sistema votacion electronica</name>
-	<description>Construir un sistema de votacion electronica</description>
+        <groupId>com.sistema</groupId>
+        <artifactId>sistema-votacion-electronica</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>auth-service</artifactId>
+
 
 	<url/>
 	<licenses>
@@ -31,104 +27,30 @@
 		<tag/>
 		<url/>
 	</scm>
-    
-    <!-- Propiedades -->
-	<properties>
-		<java.version>17</java.version>
-        <spring.boot.version>3.5.0</spring.boot.version>
-	</properties>
+
     <!-- Dependencias -->
 	<dependencies>
-        <!-- Web -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <!-- JPA / Hibernate -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-
-
-        <!-- Base de datos: H2 o MySQL -->
-        <!-- H2 para pruebas en memoria -->
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <!-- MySQL (opcional si vas a producción) -->
-        <!--
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        -->
-
         <!-- Encriptacion de contrasenas -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-
-
-        <!-- Lombok (DTO)-->
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-crypto</artifactId>
         </dependency>
 
-        <!-- Spring Boot DevTools (opcional, para autorecarga en desarrollo) -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
-        </dependency>
 
-        <!-- Spring Security (opcional, para manejar autenticación) -->
-        <!--
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-        -->
-
-        <!-- Validación de datos (opcional) -->
-        <dependency>
-            <groupId>jakarta.validation</groupId>
-            <artifactId>jakarta.validation-api</artifactId>
-        </dependency>
-
-        <!-- Testing 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-		-->
         <dependency>
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>
             <version>3.1.1</version>
         </dependency>
+
 	</dependencies>
-    
-    <!-- Manejo de dependencias 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-    -->
 	<build>
 		<plugins>
-			
-            <!-- Plugin para compilar -->
+            <!-- Plugin para compilar 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -138,6 +60,7 @@
                     <target>17</target>
                 </configuration>
             </plugin>
+            -->
 
             <!-- Plugin de Spring Boot -->
             <plugin>
@@ -146,16 +69,4 @@
             </plugin>
 		</plugins>
 	</build>
-    <!-- Repositorios 
-	<repositories>
-		<repository>
-		</repository>
-	</repositories>
-    -->
-    <!-- Repositorios de plugins 
-	<pluginRepositories>
-		<pluginRepository>
-		</pluginRepository>
-	</pluginRepositories>
-    -->
 </project>

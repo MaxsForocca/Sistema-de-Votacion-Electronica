@@ -1,4 +1,4 @@
-package com.sistema.votacion.controller;
+package com.sistema.auth.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import com.sistema.votacion.dto.UsuarioDTO;
-import com.sistema.votacion.dto.LoginDTO;
-//import com.sistema.votacion.model.Usuario;
-import com.sistema.votacion.service.UsuarioService;
+import com.sistema.auth.dto.UsuarioDTO;
+import com.sistema.auth.dto.LoginDTO;
+//import com.sistema.auth.model.Usuario;
+import com.sistema.auth.service.UsuarioService;
 
 @RestController
 @RequestMapping("/usuario")

@@ -1,29 +1,30 @@
-package com.sistema.votacion.service;
+package com.sistema.auth.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 //import org.springframework.ui.ModelMap;
 
-import com.sistema.votacion.repository.UsuarioRepository;
-import com.sistema.votacion.dto.UsuarioDTO;
-import com.sistema.votacion.dto.LoginDTO;
+import com.sistema.auth.repository.UsuarioRepository;
+import com.sistema.auth.dto.UsuarioDTO;
+import com.sistema.auth.dto.LoginDTO;
 import org.modelmapper.ModelMapper;
-import com.sistema.votacion.model.Usuario;
+import com.sistema.auth.model.Usuario;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 public class UsuarioService {
 
-    @Autowired
     private final UsuarioRepository usuarioRepository;
-    @Autowired
+    
     private final ModelMapper modelMapper;
-    @Autowired
+    
     private final PasswordEncoder passwordEncoder; // Para codificar contraseñas
 
     /* Constructor */
-    public UsuarioService(UsuarioRepository usuarioRepository, ModelMapper modelMapper) {
+    public UsuarioService(UsuarioRepository usuarioRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.modelMapper = modelMapper;
+        this.passwordEncoder = passwordEncoder; // Inicializar el codificador de contraseñas
     }
 
     /**
@@ -55,8 +56,7 @@ public class UsuarioService {
                 .isPresent();
             */
             return usuarioRepository.findByUsername(dto.getUsername())
-                .map(usuario -> usuario.getPassword().equals(dto.getPassword()))
-                .orElse(false);
+                .map(usuario -> passwordEncoder.matches(dto.getPassword(), usuario.getPassword())).orElse(false);
         } catch (Exception e) {
             throw new RuntimeException("Error al iniciar sesión: " + e.getMessage());
         }

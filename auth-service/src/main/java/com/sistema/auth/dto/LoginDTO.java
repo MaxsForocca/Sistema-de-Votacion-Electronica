@@ -1,6 +1,4 @@
-/* Transporte de datos entre capas para usuario */
-
-package com.sistema.votacion.dto;
+package com.sistema.auth.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UsuarioDTO {
+public class LoginDTO {
     private String username;
     private String password;
 }
+    

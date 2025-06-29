@@ -1,7 +1,7 @@
 /* Interfaz de comunicacion directa con la DB para Usuarios */
 
-package com.sistema.votacion.repository;
-import com.sistema.votacion.model.Usuario;
+package com.sistema.auth.repository;
+import com.sistema.auth.model.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

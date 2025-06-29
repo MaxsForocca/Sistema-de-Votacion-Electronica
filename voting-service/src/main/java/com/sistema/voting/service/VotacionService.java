@@ -1,4 +1,4 @@
-package com.sistema.votacion.service;
+package com.sistema.voting.service;
 
 import org.springframework.stereotype.Service;
 
