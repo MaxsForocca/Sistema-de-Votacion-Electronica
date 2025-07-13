@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.List;
+
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
@@ -16,6 +18,10 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
      * @param password Contraseña del usuario.
      * @return Un Optional que contiene el Usuario si se encuentra, o vacío si no.
      */
+    Optional<Usuario> findById(Long id);
+
+    Optional<Usuario> findByIdAndUsername(Long id, String username);
+
     Optional<Usuario> findByUsernameAndPassword(String username, String password);
 
     /**

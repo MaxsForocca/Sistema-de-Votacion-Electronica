@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sistema.voting.dto.UsuarioDTO;
 import com.sistema.voting.model.Votacion;
 import com.sistema.voting.model.Voto;
 import com.sistema.voting.repository.VotacionRepository;
@@ -16,10 +17,12 @@ import com.sistema.voting.repository.VotoRepository;
 public class VotingService {
     private final VotacionRepository votacionRepository;
     private final VotoRepository votoRepository;
+    private final UsuarioAuthClient usuarioAuthClient;
 
-    public VotingService(VotacionRepository votacionRepository, VotoRepository votoRepository) {
+    public VotingService(VotacionRepository votacionRepository, VotoRepository votoRepository, UsuarioAuthClient usuarioAuthClient) {
         this.votacionRepository = votacionRepository;
         this.votoRepository = votoRepository;
+        this.usuarioAuthClient = usuarioAuthClient;
     }
 
     public Votacion crearVotacion(Votacion votacion) {
@@ -35,6 +38,11 @@ public class VotingService {
     }
 
     public Voto emitirVoto(Voto voto) {
+        Optional<UsuarioDTO> usuario = usuarioAuthClient.obtenerUsuario(voto.getUsuarioId());
+
+        if (usuario.isEmpty()) {
+            throw new RuntimeException("Usuario no válido");
+        }
         // Aquí podrías validar que no haya votado ya, etc.
         return votoRepository.save(voto);
     }

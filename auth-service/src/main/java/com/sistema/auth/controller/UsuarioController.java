@@ -2,16 +2,27 @@ package com.sistema.auth.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Optional;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import com.sistema.auth.dto.UsuarioDTO;
+import com.sistema.auth.dto.UsuarioVoting;
+import com.sistema.auth.model.Usuario;
+import com.sistema.auth.repository.UsuarioRepository;
 import com.sistema.auth.dto.LoginDTO;
 //import com.sistema.auth.model.Usuario;
 import com.sistema.auth.service.UsuarioService;
 
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/usuario")
@@ -19,6 +30,12 @@ public class UsuarioController {
     
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @PostMapping("/register")
     public ResponseEntity<?> registrarUsuario(@Valid @RequestBody UsuarioDTO usuarioDTO) {
@@ -53,5 +70,21 @@ public class UsuarioController {
             return ResponseEntity.status(401).body("Error al iniciar sesión: " + e.getMessage());
         }
     }  
+    
+
+    // obtener usuario por username
+    @GetMapping("/{id}")
+    public ResponseEntity<UsuarioVoting> obtenerUsuario(@PathVariable Long id) {
+    Optional<Usuario> user = usuarioRepository.findById(id);
+    if (user.isEmpty()) {
+        return ResponseEntity.notFound().build();
+    }
+    // Permite votar solo a VOTANTES
+    if ("VOTANTE".equalsIgnoreCase(user.get().getRol().getRol())){
+        return ResponseEntity.notFound().build();
+    }
+    UsuarioVoting dto = modelMapper.map(user.get(), UsuarioVoting.class);
+    return ResponseEntity.ok(dto);
+}
     
 }
