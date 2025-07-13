@@ -8,6 +8,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
@@ -30,6 +31,6 @@ public class Usuario {
     @Column(unique = true)
     private String email;
     */
-    @Enumerated(EnumType.STRING)
+    @ManyToOne
     private Rol rol; // Roles de usuario (Admin, Votante, etc.)
 }

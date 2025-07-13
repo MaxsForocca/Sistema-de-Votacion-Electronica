@@ -29,7 +29,14 @@ public class AuthServiceApplication {
                     rolAdmin = new Rol();
                     rolAdmin.setRol("ADMIN");
                     rolAdmin = rolRepository.save(rolAdmin);  
-                }
+                } 
+                Rol rolVotante = rolRepository.findByRol("VOTANTE")
+                                .orElse(null);
+                if(rolVotante == null){
+                    rolVotante = new Rol();
+                    rolVotante.setRol("ADMIN");
+                    rolVotante = rolRepository.save(rolVotante);  
+                } 
 
                 Usuario admin = new Usuario();
                 admin.setUsername("admin");

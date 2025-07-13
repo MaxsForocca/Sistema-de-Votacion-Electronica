@@ -18,12 +18,6 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
-    /**
-     * Endpoint para registrar un nuevo usuario, usa POST.
-     * 
-     * @param usuarioDTO Datos del usuario a registrar.
-     * @return ResponseEntity con mensaje de éxito.
-     */
     @PostMapping("/register")
     public ResponseEntity<?> registrarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
         try {
@@ -39,6 +33,9 @@ public class UsuarioController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO credenciales) {
         try{
+            System.out.println("Username recibido: " + credenciales.getUsername());
+            System.out.println("Password recibido: " + credenciales.getPassword());
+
             boolean result = usuarioService.autenticar(credenciales);
             if (!result) {
                 // Si las credenciales son incorrectas, se retorna un mensaje de error
