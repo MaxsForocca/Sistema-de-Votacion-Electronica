@@ -3,6 +3,8 @@ package com.sistema.auth.model;
 //import jakarta.annotation.Generated;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -22,4 +24,12 @@ public class Usuario {
 
     @NotBlank(message = "La contraseña no puede estar vacía")
     private String password;
+
+    /* 
+    @NotBlank(message = "El nombre de usuario no puede estar vacío")
+    @Column(unique = true)
+    private String email;
+    */
+    @Enumerated(EnumType.STRING)
+    private Rol rol; // Roles de usuario (Admin, Votante, etc.)
 }
