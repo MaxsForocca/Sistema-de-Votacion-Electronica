@@ -72,19 +72,19 @@ public class UsuarioController {
     }  
     
 
-    // obtener usuario por username
+    // obtener usuario por id
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioVoting> obtenerUsuario(@PathVariable Long id) {
-    Optional<Usuario> user = usuarioRepository.findById(id);
-    if (user.isEmpty()) {
-        return ResponseEntity.notFound().build();
+        Optional<Usuario> user = usuarioRepository.findById(id);
+        if (user.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        // Permite votar solo a VOTANTES
+        if (!"VOTANTE".equalsIgnoreCase(user.get().getRol().getRol())){
+            return ResponseEntity.notFound().build();
+        }
+        UsuarioVoting dto = modelMapper.map(user.get(), UsuarioVoting.class);
+        return ResponseEntity.ok(dto);
     }
-    // Permite votar solo a VOTANTES
-    if ("VOTANTE".equalsIgnoreCase(user.get().getRol().getRol())){
-        return ResponseEntity.notFound().build();
-    }
-    UsuarioVoting dto = modelMapper.map(user.get(), UsuarioVoting.class);
-    return ResponseEntity.ok(dto);
-}
     
 }
