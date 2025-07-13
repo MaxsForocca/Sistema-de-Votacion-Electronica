@@ -34,7 +34,7 @@ public class AuthServiceApplication {
                                 .orElse(null);
                 if(rolVotante == null){
                     rolVotante = new Rol();
-                    rolVotante.setRol("ADMIN");
+                    rolVotante.setRol("VOTANTE");
                     rolVotante = rolRepository.save(rolVotante);  
                 } 
 

@@ -40,6 +40,8 @@ public class UsuarioService {
      */
     public void registrar(UsuarioDTO dto) {
         try {
+            System.out.println("DTO recibido: " + dto);
+
             if(usuarioRepository.existsByUsername(dto.getUsername())){
                 throw new RuntimeException("El usuario " + dto.getUsername() + " ya existe");
             }
@@ -59,11 +61,6 @@ public class UsuarioService {
 
     public boolean autenticar(LoginDTO dto) {
         try {
-            /*
-            return usuarioRepository
-                .findByUsernameAndPassword(dto.getUsername(), dto.getPassword())
-                .isPresent();
-            */
             return usuarioRepository.findByUsername(dto.getUsername())
                 .map(usuario -> passwordEncoder.matches(dto.getPassword(), usuario.getPassword())).orElse(false);
         } catch (Exception e) {

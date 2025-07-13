@@ -11,6 +11,8 @@ import com.sistema.auth.dto.LoginDTO;
 //import com.sistema.auth.model.Usuario;
 import com.sistema.auth.service.UsuarioService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/usuario")
 public class UsuarioController {
@@ -19,8 +21,11 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> registrarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
+    public ResponseEntity<?> registrarUsuario(@Valid @RequestBody UsuarioDTO usuarioDTO) {
         try {
+            System.out.println("Se ingreso al controller para registrar");
+            System.out.println("DTO recibido: " + usuarioDTO);
+
             //Logica de registro de usuario
             usuarioService.registrar(usuarioDTO);
             return ResponseEntity.ok("Usuario registrado exitosamente");
