@@ -13,7 +13,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/documentos")
@@ -27,6 +29,27 @@ public class DocumentController {
 
     @Autowired
     private RemoteNodeService remoteNodeService;
+
+    @GetMapping
+    public ResponseEntity<List<String>> listarArchivosLocalesYRemotos(
+          @RequestHeader(value = "X-Visited-Nodes", required = false) String visitedHeader
+    ) {
+        System.out.println("Header X-Visited-Nodes recibido: " + visitedHeader);
+        List<String> visitedNodes = new ArrayList<>();
+        if (visitedHeader != null && !visitedHeader.isBlank()) {
+            visitedNodes.addAll(Arrays.asList(visitedHeader.split(",")));
+        }
+        visitedNodes.add(documentNodeIp);
+
+        List<String> archivosLocales = localStorageService.listFileNames();
+        List<String> archivosRemotos = remoteNodeService.getAllFileNamesFromOtherNodes(visitedNodes);
+
+        Set<String> todosLosArchivos = new HashSet<>();
+        todosLosArchivos.addAll(archivosLocales);
+        todosLosArchivos.addAll(archivosRemotos); // evitar duplicados
+
+        return ResponseEntity.ok(new ArrayList<>(todosLosArchivos));
+    }
 
     @PostMapping("/subir")
     public ResponseEntity<String> subir(@RequestParam("archivo") MultipartFile archivo) {
@@ -45,7 +68,7 @@ public class DocumentController {
             @RequestHeader(value = "X-Visited-Nodes", required = false) String visitedHeader) {
 
     System.out.println("Header X-Visited-Nodes recibido: " + visitedHeader);
-    
+
         try {
             var local = localStorageService.get(filename);
             if (local.isPresent()) {

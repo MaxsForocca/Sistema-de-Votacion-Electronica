@@ -1,12 +1,15 @@
 package com.sistema.document.storage;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.nio.file.*;
-import java.util.Optional;
 
 @Service
 public class LocalStorageService {
@@ -30,5 +33,19 @@ public class LocalStorageService {
     public Optional<Path> get(String filename) {
         Path filePath = storagePath.resolve(filename);
         return Files.exists(filePath) ? Optional.of(filePath) : Optional.empty();
+    }
+
+    public List<String> listFileNames() {
+        List<String> filenames = new ArrayList<>();
+        File folder = storagePath.toFile();
+
+        if (folder.exists() && folder.isDirectory()) {
+            for (File file : folder.listFiles()) {
+                if (file.isFile()) {
+                    filenames.add(file.getName());
+                }
+            }
+        }
+        return filenames;
     }
 }
