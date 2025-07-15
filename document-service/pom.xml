@@ -3,32 +3,45 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- Parent: Heredar -->
     <parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.5</version>
-		<relativePath/>
-	</parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.5</version>
+        <relativePath/>
+    </parent>
 
-    <!-- Informacion del proyecto -->
-	<groupId>com.sistema</groupId>
-	<artifactId>document-service</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-    <packaging>pom</packaging>
-	<name>document-service</name>
-	<description>Sistema de votacion electronica: document-service</description>
+    <groupId>com.sistema</groupId>
+    <artifactId>document-service</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>document-service</name>
+    <description>Sistema de votacion electronica: document-service</description>
 
     <dependencies>
+        <!-- Spring Web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- Lombok (si piensas usarlo) -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Test (opcional para pruebas) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
-            <!-- Plugin para compilar -->
+            <!-- Compilador Java -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -38,10 +51,14 @@
                     <target>17</target>
                 </configuration>
             </plugin>
-            
+
+            <!-- Spring Boot plugin con clase principal -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.sistema.document.DocumentServiceApplication</mainClass>
+                </configuration>
             </plugin>
         </plugins>
     </build>
