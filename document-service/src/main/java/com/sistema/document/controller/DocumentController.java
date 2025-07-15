@@ -23,6 +23,7 @@ public class DocumentController {
 
     @PostMapping("/subir")
     public ResponseEntity<String> subir(@RequestParam("archivo") MultipartFile archivo) {
+        System.out.print("Entrando a método subir.");
         try {
             localStorageService.save(archivo.getOriginalFilename(), archivo);
             return ResponseEntity.ok("Archivo guardado localmente");

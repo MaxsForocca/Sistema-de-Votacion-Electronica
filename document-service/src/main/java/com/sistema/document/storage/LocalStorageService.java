@@ -16,19 +16,19 @@ public class LocalStorageService {
     public LocalStorageService(@Value("${document.storage.path}") String path) {
         this.storagePath = Paths.get(path).toAbsolutePath().normalize();
         try {
-            Files.createDirectories(this.storagePath);
+            Files.createDirectories(this.storagePath); // crea carpeta si no existe
         } catch (IOException e) {
             throw new RuntimeException("No se pudo crear el directorio de almacenamiento local", e);
         }
     }
 
     public void save(String filename, MultipartFile file) throws IOException {
-        Path target = this.storagePath.resolve(filename);
-        Files.copy(file.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
+        Path destination = storagePath.resolve(filename);
+        file.transferTo(destination); // intenta guardar archivo físico
     }
 
     public Optional<Path> get(String filename) {
-        Path target = this.storagePath.resolve(filename);
-        return Files.exists(target) ? Optional.of(target) : Optional.empty();
+        Path filePath = storagePath.resolve(filename);
+        return Files.exists(filePath) ? Optional.of(filePath) : Optional.empty();
     }
 }
