@@ -21,6 +21,9 @@ public class OpcionService {
     @Autowired
     private VotacionRepository votacionRepository;
 
+    @Autowired
+    private UsuarioAuthClient usuarioAuthClient;
+
     public OpcionDTO crearOpcion(OpcionDTO dto) {
         Opcion opcion = new Opcion();
         opcion.setTexto(dto.getTexto());

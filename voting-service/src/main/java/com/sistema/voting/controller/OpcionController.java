@@ -2,6 +2,7 @@ package com.sistema.voting.controller;
 
 import com.sistema.voting.dto.OpcionDTO;
 import com.sistema.voting.dto.OpcionLoteDTO;
+import com.sistema.voting.dto.UsuarioVoting;
 import com.sistema.voting.service.OpcionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +16,15 @@ public class OpcionController {
     private OpcionService opcionService;
 
     @PostMapping
-    public ResponseEntity<OpcionDTO> crear(@RequestBody OpcionDTO dto) {
+    public ResponseEntity<OpcionDTO> crear(@RequestBody OpcionDTO dto) { 
+        
         return ResponseEntity.ok(opcionService.crearOpcion(dto));
     }
 
+    
     @GetMapping("/{id}")
     public ResponseEntity<OpcionDTO> obtener(@PathVariable Long id) {
+        
         return opcionService.obtenerPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -28,6 +32,8 @@ public class OpcionController {
 
     @GetMapping("/votacion/{votacionId}")
     public ResponseEntity<?> listarPorVotacion(@PathVariable Long votacionId) {
+
+        
         try {
             return ResponseEntity.ok(opcionService.obtenerPorVotacionId(votacionId));
         } catch (RuntimeException e) {
@@ -41,7 +47,7 @@ public class OpcionController {
     public ResponseEntity<?> agregarOpciones(
             @PathVariable Long votacionId,
             @RequestBody OpcionLoteDTO dto) {
-
+        
         if (dto.getTextos() == null || dto.getTextos().isEmpty()) {
             return ResponseEntity.badRequest().body("La lista de opciones está vacía.");
         }
