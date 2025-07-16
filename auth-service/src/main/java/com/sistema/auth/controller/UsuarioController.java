@@ -86,5 +86,4 @@ public class UsuarioController {
         UsuarioVoting dto = modelMapper.map(user.get(), UsuarioVoting.class);
         return ResponseEntity.ok(dto);
     }
-    
 }
