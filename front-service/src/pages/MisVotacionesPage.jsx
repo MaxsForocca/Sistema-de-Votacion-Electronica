@@ -117,7 +117,7 @@ const MisVotacionesPage = () => {
           <div className="votaciones-grid-votante">
             {votaciones.map(votacion => (
               <div key={votacion.id} className="votacion-card-votante">
-                <div className="card-header">
+                <div className="card-header.on-vote">
                   <h3>{votacion.titulo}</h3>
                   <span className={`status-badge ${votacion.activa ? 'activa' : 'inactiva'}`}>
                     {votacion.activa ? (

@@ -1,4 +1,3 @@
-// src/components/Sidebar.jsx
 import React from 'react';
 import {
   FaHome,
@@ -8,15 +7,24 @@ import {
   FaTags,
   FaEnvelope,
   FaClipboardCheck,
-  FaFilePdf
+  FaFilePdf,
+  FaSignOutAlt
 } from 'react-icons/fa';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import '../styles/sidebar.css';
 
 const Sidebar = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('usuario');
+    navigate('/login');
+  };
+
   return (
     <aside className="sidebar">
       <div className="sidebar-title">VOTE NOW</div>
+      
       <nav className="sidebar-nav">
         <NavLink
           to="/dashboard/inicio"
@@ -71,7 +79,7 @@ const Sidebar = () => {
           className={({ isActive }) =>
               isActive ? 'sidebar-item selected' : 'sidebar-item'
             }
-          >
+        >
           <FaEnvelope className="sidebar-icon" />
           <span>Invitaciones</span>
         </NavLink>
@@ -96,6 +104,14 @@ const Sidebar = () => {
           <span>Documentos</span>
         </NavLink>
       </nav>
+
+      {/* Botón de Cerrar Sesión */}
+      <div className="sidebar-logout">
+        <button className="sidebar-item logout-btn" onClick={handleLogout}>
+          <FaSignOutAlt className="sidebar-icon" />
+          <span>Cerrar Sesión</span>
+        </button>
+      </div>
     </aside>
   );
 };

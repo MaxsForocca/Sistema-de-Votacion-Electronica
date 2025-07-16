@@ -1,9 +1,10 @@
 /* src/styles/votante.css */
 
 /* Container principal para votantes */
+/* Container principal para votantes */
 .votante-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2a2a72 0%, #3c1053 100%);
   color: white;
 }
 

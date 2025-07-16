@@ -114,12 +114,6 @@ export const Login = () => {
             </button>
           </form>
 
-          {/* Información de usuarios demo */}
-          <div className="demo-info">
-            <h4>Usuarios de prueba:</h4>
-            <p><strong>Admin:</strong> admin / admin</p>
-            <p><strong>Votante:</strong> user / user</p>
-          </div>
         </div>
       </div>
     </div>

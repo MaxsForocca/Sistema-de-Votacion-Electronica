@@ -136,39 +136,7 @@ const Auditoria = () => {
       </div>
 
       <div className="entity-content">
-        <div className="crud-header">
-          <div className="filters-section">
-            <div className="filter-group">
-              <input
-                type="text"
-                placeholder="Filtrar por acción"
-                value={filters.accion}
-                onChange={(e) => setFilters({...filters, accion: e.target.value})}
-              />
-              <input
-                type="text"
-                placeholder="Usuario ID"
-                value={filters.usuarioId}
-                onChange={(e) => setFilters({...filters, usuarioId: e.target.value})}
-              />
-              <input
-                type="date"
-                placeholder="Fecha desde"
-                value={filters.fechaDesde}
-                onChange={(e) => setFilters({...filters, fechaDesde: e.target.value})}
-              />
-              <input
-                type="date"
-                placeholder="Fecha hasta"
-                value={filters.fechaHasta}
-                onChange={(e) => setFilters({...filters, fechaHasta: e.target.value})}
-              />
-              <button className="btn-secondary" onClick={limpiarFiltros}>
-                Limpiar
-              </button>
-            </div>
-          </div>
-          
+        <div className="crud-header">          
           <div className="actions-group">
             <button className="btn-primary" onClick={exportarCSV}>
               <FaDownload /> Exportar CSV

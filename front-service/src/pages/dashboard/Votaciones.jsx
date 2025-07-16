@@ -182,7 +182,7 @@ const Votaciones = () => {
                 </span>
               </div>
 
-              <div className="card-body">
+              <div className="card-body no-margin">
                 <p><strong>Categoría:</strong> {getCategoryName(votacion.categoriaId)}</p>
                 <p><strong>Descripción:</strong> {votacion.descripcion}</p>
 
@@ -405,16 +405,19 @@ const Votaciones = () => {
                     {selectedVotacion.preguntas.map((pregunta, index) => (
                       <div key={index} className="pregunta-detail">
                         <h5>Pregunta {index + 1}: {pregunta.texto}</h5>
-                        <ul className="opciones-list">
+                        <div className="opciones-list">
                           {pregunta.opciones?.map((opcion, opIndex) => (
-                            <li key={opIndex}>{opcion.texto}</li>
+                            <div key={opIndex} className="opcion-tag">
+                              {opcion.texto}
+                            </div>
                           ))}
-                        </ul>
+                        </div>
                       </div>
                     ))}
                   </div>
                 </div>
               )}
+
             </div>
             <div className="modal-actions">
               <button 

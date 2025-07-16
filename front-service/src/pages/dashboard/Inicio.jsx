@@ -18,9 +18,11 @@ import { listarCategorias } from '../../services/categoriaService';
 import { listarVotaciones } from '../../services/votacionService';
 import { listarAuditorias } from '../../services/auditoriaService';
 import { listarDocumentos } from '../../services/documentoService';
-import '../../styles/crud.css';
+import '../../styles/home.css';
+import { useNavigate } from 'react-router-dom';
 
 const Inicio = () => {
+  const navigate = useNavigate();
   const [stats, setStats] = useState({
     usuarios: 0,
     departamentos: 0,
@@ -279,24 +281,25 @@ const Inicio = () => {
         <div className="quick-actions">
           <h3>Acciones Rápidas</h3>
           <div className="actions-grid">
-            <button className="action-btn" onClick={() => window.location.href = '#/dashboard/usuarios'}>
+            <button className="action-btn" onClick={() => navigate('/dashboard/usuarios')}>
               <FaUsers />
               <span>Gestionar Usuarios</span>
             </button>
-            <button className="action-btn" onClick={() => window.location.href = '#/dashboard/votaciones'}>
+            <button className="action-btn" onClick={() => navigate('/dashboard/votaciones')}>
               <FaVoteYea />
               <span>Nueva Votación</span>
             </button>
-            <button className="action-btn" onClick={() => window.location.href = '#/dashboard/auditoria'}>
+            <button className="action-btn" onClick={() => navigate('/dashboard/auditoria')}>
               <FaClipboardCheck />
               <span>Ver Auditoría</span>
             </button>
-            <button className="action-btn" onClick={() => window.location.href = '#/dashboard/documentos'}>
+            <button className="action-btn" onClick={() => navigate('/dashboard/documentos')}>
               <FaFilePdf />
               <span>Subir Documento</span>
             </button>
           </div>
         </div>
+
       </div>
     </div>
   );

@@ -137,50 +137,33 @@ const Usuarios = () => {
         </div>
 
         {error && <div className="error-message">{error}</div>}
+        <div className="departamentos-list">
+        {usuarios.map(usuario => (
+          <div className="departamento-card" key={usuario.id}>
+            <div className="departamento-info">
+              <FaUsers className="departamento-icon" />
+              <div>
+                <span className="departamento-nombre">{usuario.username}</span>
+                <p className="departamento-descripcion">
+                  {getRoleName(usuario.idRol)} - {getDepartmentName(usuario.idDepartamento)}
+                </p>
+              </div>
+            </div>
+            <div className="actions">
+              <button className="btn-view" onClick={() => handleView(usuario)}>
+                <FaEye />
+              </button>
+              <button className="btn-edit" onClick={() => handleEdit(usuario)}>
+                <FaEdit />
+              </button>
+              <button className="btn-delete" onClick={() => handleDelete(usuario.id)}>
+                <FaTrash />
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
 
-        <div className="table-container">
-          <table className="crud-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Username</th>
-                <th>Rol</th>
-                <th>Departamento</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {usuarios.map(usuario => (
-                <tr key={usuario.id}>
-                  <td>{usuario.id}</td>
-                  <td>{usuario.username}</td>
-                  <td>{getRoleName(usuario.idRol)}</td>
-                  <td>{getDepartmentName(usuario.idDepartamento)}</td>
-                  <td className="actions">
-                    <button 
-                      className="btn-view"
-                      onClick={() => handleView(usuario)}
-                    >
-                      <FaEye />
-                    </button>
-                    <button 
-                      className="btn-edit"
-                      onClick={() => handleEdit(usuario)}
-                    >
-                      <FaEdit />
-                    </button>
-                    <button 
-                      className="btn-delete"
-                      onClick={() => handleDelete(usuario.id)}
-                    >
-                      <FaTrash />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
       </div>
 
       {/* Modal Crear/Editar */}

@@ -154,7 +154,7 @@ const Documentos = () => {
 
         {error && <div className="error-message">{error}</div>}
 
-        <div className="documents-stats">
+        <div className="stats-section">
           <div className="stat-card">
             <h4>Total de Documentos</h4>
             <span>{documentos.length}</span>
