@@ -10,7 +10,7 @@ const api = axios.create({
 
 export const listarDocumentos = async () => {
   try {
-    const response = await api.get('/');
+    const response = await api.get('');
     return response.data;
   } catch (error) {
     throw error.response?.data || 'Error al listar documentos';

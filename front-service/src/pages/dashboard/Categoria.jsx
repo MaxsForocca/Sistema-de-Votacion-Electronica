@@ -1,11 +1,10 @@
-// src/pages/dashboard/Categoria.jsx
 import React, { useState, useEffect } from 'react';
 import { FaPlus, FaEdit, FaTrash, FaEye, FaTags } from 'react-icons/fa';
-import { 
-  listarCategorias, 
-  crearCategoria, 
-  actualizarCategoria, 
-  eliminarCategoria 
+import {
+  listarCategorias,
+  crearCategoria,
+  actualizarCategoria,
+  eliminarCategoria,
 } from '../../services/categoriaService';
 import '../../styles/crud.css';
 
@@ -15,9 +14,7 @@ const Categoria = () => {
   const [showViewModal, setShowViewModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [formData, setFormData] = useState({
-    nombre: ''
-  });
+  const [formData, setFormData] = useState({ nombre: '' });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -94,54 +91,33 @@ const Categoria = () => {
 
       <div className="entity-content">
         <div className="crud-header">
-          <button 
-            className="btn-primary"
-            onClick={() => setShowModal(true)}
-          >
+          <button className="btn-primary" onClick={() => setShowModal(true)}>
             <FaPlus /> Nueva Categoría
           </button>
         </div>
 
         {error && <div className="error-message">{error}</div>}
 
-        <div className="table-container">
-          <table className="crud-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {categorias.map(categoria => (
-                <tr key={categoria.id}>
-                  <td>{categoria.id}</td>
-                  <td>{categoria.nombre}</td>
-                  <td className="actions">
-                    <button 
-                      className="btn-view"
-                      onClick={() => handleView(categoria)}
-                    >
-                      <FaEye />
-                    </button>
-                    <button 
-                      className="btn-edit"
-                      onClick={() => handleEdit(categoria)}
-                    >
-                      <FaEdit />
-                    </button>
-                    <button 
-                      className="btn-delete"
-                      onClick={() => handleDelete(categoria.id)}
-                    >
-                      <FaTrash />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="departamentos-list">
+          {categorias.map((categoria) => (
+            <div className="departamento-card" key={categoria.id}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <FaTags className="departamento-icon" />
+                <span className="departamento-nombre">{categoria.nombre}</span>
+              </div>
+              <div className="actions">
+                <button className="btn-view" onClick={() => handleView(categoria)}>
+                  <FaEye />
+                </button>
+                <button className="btn-edit" onClick={() => handleEdit(categoria)}>
+                  <FaEdit />
+                </button>
+                <button className="btn-delete" onClick={() => handleDelete(categoria.id)}>
+                  <FaTrash />
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -151,13 +127,7 @@ const Categoria = () => {
           <div className="modal">
             <div className="modal-header">
               <h3>{editMode ? 'Editar Categoría' : 'Nueva Categoría'}</h3>
-              <button 
-                className="modal-close"
-                onClick={() => {
-                  setShowModal(false);
-                  resetForm();
-                }}
-              >
+              <button className="modal-close" onClick={() => { setShowModal(false); resetForm(); }}>
                 ×
               </button>
             </div>
@@ -167,7 +137,7 @@ const Categoria = () => {
                 <input
                   type="text"
                   value={formData.nombre}
-                  onChange={(e) => setFormData({...formData, nombre: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
                   required
                   placeholder="Ingrese el nombre de la categoría"
                 />
@@ -177,8 +147,8 @@ const Categoria = () => {
                 <button type="submit" className="btn-primary">
                   {editMode ? 'Actualizar' : 'Crear'}
                 </button>
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   className="btn-secondary"
                   onClick={() => {
                     setShowModal(false);
@@ -199,10 +169,7 @@ const Categoria = () => {
           <div className="modal">
             <div className="modal-header">
               <h3>Detalles de la Categoría</h3>
-              <button 
-                className="modal-close"
-                onClick={() => setShowViewModal(false)}
-              >
+              <button className="modal-close" onClick={() => setShowViewModal(false)}>
                 ×
               </button>
             </div>
@@ -215,10 +182,7 @@ const Categoria = () => {
               </div>
             </div>
             <div className="modal-actions">
-              <button 
-                className="btn-secondary"
-                onClick={() => setShowViewModal(false)}
-              >
+              <button className="btn-secondary" onClick={() => setShowViewModal(false)}>
                 Cerrar
               </button>
             </div>

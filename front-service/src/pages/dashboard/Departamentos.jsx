@@ -104,44 +104,35 @@ const Departamentos = () => {
 
         {error && <div className="error-message">{error}</div>}
 
-        <div className="table-container">
-          <table className="crud-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {departamentos.map(departamento => (
-                <tr key={departamento.id}>
-                  <td>{departamento.id}</td>
-                  <td>{departamento.nombre}</td>
-                  <td className="actions">
-                    <button 
-                      className="btn-view"
-                      onClick={() => handleView(departamento)}
-                    >
-                      <FaEye />
-                    </button>
-                    <button 
-                      className="btn-edit"
-                      onClick={() => handleEdit(departamento)}
-                    >
-                      <FaEdit />
-                    </button>
-                    <button 
-                      className="btn-delete"
-                      onClick={() => handleDelete(departamento.id)}
-                    >
-                      <FaTrash />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="departamentos-list">
+          {departamentos.map(departamento => (
+            <div className="departamento-card" key={departamento.id}>
+              <div className="departamento-info">
+                <FaMapMarkedAlt className="departamento-icon" />
+                <span className="departamento-nombre">{departamento.nombre}</span>
+              </div>
+              <div className="actions">
+                <button 
+                  className="btn-view"
+                  onClick={() => handleView(departamento)}
+                >
+                  <FaEye />
+                </button>
+                <button 
+                  className="btn-edit"
+                  onClick={() => handleEdit(departamento)}
+                >
+                  <FaEdit />
+                </button>
+                <button 
+                  className="btn-delete"
+                  onClick={() => handleDelete(departamento.id)}
+                >
+                  <FaTrash />
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
