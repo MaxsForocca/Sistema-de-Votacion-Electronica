@@ -11,8 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import com.sistema.auth.dto.RegisterDTO;
 import com.sistema.auth.dto.UsuarioDTO;
+import com.sistema.auth.dto.UsuarioResponseDTO;
 import com.sistema.auth.dto.UsuarioVoting;
 import com.sistema.auth.model.Rol;
 import com.sistema.auth.model.Usuario;
@@ -21,7 +21,6 @@ import com.sistema.auth.dto.LoginDTO;
 //import com.sistema.auth.model.Usuario;
 import com.sistema.auth.service.UsuarioService;
 
-import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,27 +35,6 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
-
-    /*
-     * Controller para el registro y autenticación de usuarios.
-     * @param registerDTO DTO que contiene los datos del usuario a registrar.
-     * @return ResponseEntity con el resultado del registro.
-     */
-
-    @PostMapping("/register")
-    public ResponseEntity<?> registrarUsuario(@Valid @RequestBody RegisterDTO registerDTO) {
-        try {
-            System.out.println("Se ingreso al controller para registrar");
-            System.out.println("DTO recibido: " + registerDTO);
-
-            //Logica de registro de usuario
-            usuarioService.registrar(registerDTO);
-            return ResponseEntity.ok("Usuario registrado exitosamente");
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error al registrar el usuario: " + e.getMessage());
-        }
-    }
-    
     
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO credenciales) {
@@ -77,7 +55,6 @@ public class UsuarioController {
         }
     }  
     
-
     // obtener usuario por id para Votacion
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioVoting> obtenerUsuario(@PathVariable Long id) {
@@ -95,27 +72,24 @@ public class UsuarioController {
         );
         return ResponseEntity.ok(dto);
     }
-    
 
     //// Controller para ADMIN 
     @GetMapping
-    public ResponseEntity<List<UsuarioDTO>> listarUsuarios() {
+    public ResponseEntity<List<UsuarioResponseDTO>> listarUsuarios() {
         return ResponseEntity.ok(usuarioService.listarTodos());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UsuarioDTO> obtenerPorId(@PathVariable Long id) {
+    @GetMapping("/specific/{id}")
+    public ResponseEntity<UsuarioResponseDTO> obtenerPorId(@PathVariable Long id) {
         return usuarioService.obtenerPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    
     @PostMapping
     public ResponseEntity<UsuarioDTO> crear(@RequestBody UsuarioDTO dto) {
         return ResponseEntity.ok(usuarioService.crear(dto));
     }
-
     
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioDTO> actualizar(@PathVariable Long id, @RequestBody UsuarioDTO dto) {

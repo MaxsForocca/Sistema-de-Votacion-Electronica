@@ -2,7 +2,6 @@ package com.sistema.auth.controller;
 
 import java.util.List;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,22 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sistema.auth.dto.DepartamentoDTO;
-import com.sistema.auth.repository.DepartamentoRepository;
-import com.sistema.auth.repository.UsuarioRepository;
 import com.sistema.auth.service.DepartamentoService;
-import com.sistema.auth.service.UsuarioService;
 
 @RestController
 @RequestMapping("/departamentos")
 public class DepartamentoController {
     @Autowired
     private DepartamentoService departamentoService;
-
-    @Autowired
-    private DepartamentoRepository departamentoRepository;
-
-    @Autowired
-    private ModelMapper modelMapper;
 
     public DepartamentoController(DepartamentoService departamentoService) {
         this.departamentoService = departamentoService;
@@ -63,5 +53,4 @@ public class DepartamentoController {
         departamentoService.eliminar(id);
         return ResponseEntity.ok("Departamento eliminado");
     }
-
 }

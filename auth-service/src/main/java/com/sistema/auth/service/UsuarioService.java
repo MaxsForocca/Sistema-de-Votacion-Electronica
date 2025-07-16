@@ -1,116 +1,95 @@
 package com.sistema.auth.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-//import org.springframework.ui.ModelMap;
 
 import com.sistema.auth.repository.UsuarioRepository;
 import com.sistema.auth.dto.RegisterDTO;
 import com.sistema.auth.dto.UsuarioDTO;
+import com.sistema.auth.dto.UsuarioResponseDTO;
 import com.sistema.auth.dto.LoginDTO;
+import com.sistema.auth.model.Departamento;
+import com.sistema.auth.model.Rol;
+import com.sistema.auth.model.Usuario;
+import com.sistema.auth.repository.RolRepository;
+import com.sistema.auth.repository.DepartamentoRepository;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
-
-import com.sistema.auth.model.Rol;
-import com.sistema.auth.model.Usuario;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import com.sistema.auth.repository.RolRepository;
-
 @Service
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
-
     private final RolRepository rolRepository;
-    
-    private final ModelMapper modelMapper;
-    
-    private final PasswordEncoder passwordEncoder; // Para codificar contraseñas
+    private final DepartamentoRepository departamentoRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    /* Constructor */
-    public UsuarioService(UsuarioRepository usuarioRepository, RolRepository rolRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
+    public UsuarioService(UsuarioRepository usuarioRepository,
+                          RolRepository rolRepository,
+                          DepartamentoRepository departamentoRepository,
+                          PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.rolRepository = rolRepository;
-        this.modelMapper = modelMapper;
-        this.passwordEncoder = passwordEncoder; // Inicializar el codificador de contraseñas
+        this.departamentoRepository = departamentoRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    /**
-     * Registra un nuevo usuario en el sistema.
-     *
-     * @param dto Datos del usuario a registrar.
-     */
     public void registrar(RegisterDTO dto) {
-        try {
-            System.out.println("DTO recibido: " + dto);
-
-            if(usuarioRepository.existsByUsername(dto.getUsername())){
-                throw new RuntimeException("El usuario " + dto.getUsername() + " ya existe");
-            }
-            // Asignar el rol VOTANTE por defecto
-            Rol rol = rolRepository.findByRol("VOTANTE")
-                .orElseThrow(() -> new RuntimeException("Rol no disponible"));
-            
-            Usuario usuario = modelMapper.map(dto, Usuario.class);
-            usuario.setPassword(passwordEncoder.encode(dto.getPassword())); // Codificar la contraseña
-            usuario.setRol(rol);
-            usuarioRepository.save(usuario);
-
-        } catch (Exception e) {
-            throw new RuntimeException("Error al registrar el usuario: " + e.getMessage());
-        }
-    }
-
-    /*
-     * Autentica un usuario con sus credenciales.
-     * 
-     * @param dto Datos de inicio de sesión.
-     * @return true si las credenciales son válidas, false en caso contrario.
-     */
-    public boolean autenticar(LoginDTO dto) {
-        try {
-            return usuarioRepository.findByUsername(dto.getUsername())
-                .map(usuario -> passwordEncoder.matches(dto.getPassword(), usuario.getPassword())).orElse(false);
-        } catch (Exception e) {
-            throw new RuntimeException("Error al iniciar sesión: " + e.getMessage());
-        }
-    }
-
-    /* SERVICES PARA ADMIN (CRUD) */
-    public Optional<UsuarioDTO> obtenerPorId(Long id) {
-        return usuarioRepository.findById(id)
-            .map(usuario -> modelMapper.map(usuario, UsuarioDTO.class));
-    }
-
-    public List<UsuarioDTO> listarTodos() {
-        return usuarioRepository.findAll().stream()
-            .map(usuario -> modelMapper.map(usuario, UsuarioDTO.class))
-            .collect(Collectors.toList());
-    }
-
-    public UsuarioDTO crear(UsuarioDTO dto) {
         if (usuarioRepository.existsByUsername(dto.getUsername())) {
-            throw new RuntimeException("Usuario ya existe");
+            throw new RuntimeException("El usuario " + dto.getUsername() + " ya existe");
         }
 
-        Rol rol = rolRepository.findById(dto.getIdRol())
-            .orElseThrow(() -> new RuntimeException("Rol no válido"));
+        Rol rol = rolRepository.findByRol("VOTANTE")
+                .orElseThrow(() -> new RuntimeException("Rol no disponible"));
 
-        Usuario usuario = modelMapper.map(dto, Usuario.class);
+        Usuario usuario = new Usuario();
+        usuario.setUsername(dto.getUsername());
         usuario.setPassword(passwordEncoder.encode(dto.getPassword()));
         usuario.setRol(rol);
 
-        Usuario guardado = usuarioRepository.save(usuario);
-        return modelMapper.map(guardado, UsuarioDTO.class);
+        usuarioRepository.save(usuario);
     }
-    
+
+    public boolean autenticar(LoginDTO dto) {
+        return usuarioRepository.findByUsername(dto.getUsername())
+                .map(usuario -> passwordEncoder.matches(dto.getPassword(), usuario.getPassword()))
+                .orElse(false);
+    }
+
+    public Optional<UsuarioResponseDTO> obtenerPorId(Long id) {
+        return usuarioRepository.findById(id).map(this::convertirAUsuarioResponseDTO);
+    }
+
+    public List<UsuarioResponseDTO> listarTodos() {
+        return usuarioRepository.findAll().stream()
+                .map(this::convertirAUsuarioResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    public UsuarioDTO crear(UsuarioDTO dto) {
+        Usuario usuario = new Usuario();
+        usuario.setUsername(dto.getUsername());
+        usuario.setPassword(passwordEncoder.encode(dto.getPassword()));
+
+        Rol rol = rolRepository.findById(dto.getIdRol())
+                .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
+        usuario.setRol(rol);
+
+        Departamento departamento = departamentoRepository.findById(dto.getIdDepartamento())
+                .orElseThrow(() -> new RuntimeException("Departamento no encontrado"));
+        usuario.setDepartamento(departamento);
+
+        usuarioRepository.save(usuario);
+
+        return convertirAUsuarioDTO(usuario);
+    }
+
     public UsuarioDTO actualizar(Long id, UsuarioDTO dto) {
         Usuario usuario = usuarioRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
         usuario.setUsername(dto.getUsername());
 
@@ -120,12 +99,18 @@ public class UsuarioService {
 
         if (dto.getIdRol() != null) {
             Rol rol = rolRepository.findById(dto.getIdRol())
-                .orElseThrow(() -> new RuntimeException("Rol no válido"));
+                    .orElseThrow(() -> new RuntimeException("Rol no válido"));
             usuario.setRol(rol);
         }
 
+        if (dto.getIdDepartamento() != null) {
+            Departamento departamento = departamentoRepository.findById(dto.getIdDepartamento())
+                    .orElseThrow(() -> new RuntimeException("Departamento no válido"));
+            usuario.setDepartamento(departamento);
+        }
+
         Usuario actualizado = usuarioRepository.save(usuario);
-        return modelMapper.map(actualizado, UsuarioDTO.class);
+        return convertirAUsuarioDTO(actualizado);
     }
 
     public void eliminar(Long id) {
@@ -134,4 +119,26 @@ public class UsuarioService {
         }
         usuarioRepository.deleteById(id);
     }
+
+    // Utilidad para convertir Entity → DTO
+    private UsuarioDTO convertirAUsuarioDTO(Usuario usuario) {
+        return new UsuarioDTO(
+                usuario.getUsername(),
+                usuario.getPassword(), // No devolvemos password por seguridad
+                usuario.getRol() != null ? usuario.getRol().getId() : null,
+                usuario.getDepartamento() != null ? usuario.getDepartamento().getId() : null
+        );
+    }
+
+    // Convierte Usuario → UsuarioResponseDTO
+    private UsuarioResponseDTO convertirAUsuarioResponseDTO(Usuario usuario) {
+        return new UsuarioResponseDTO(
+            usuario.getId(),
+            usuario.getUsername(),
+            usuario.getPassword(),
+            usuario.getRol() != null ? usuario.getRol().getId() : null,
+            usuario.getDepartamento() != null ? usuario.getDepartamento().getId() : null
+        );
+    }
 }
+

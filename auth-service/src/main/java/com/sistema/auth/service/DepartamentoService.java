@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.sistema.auth.dto.DepartamentoDTO;
@@ -13,39 +12,44 @@ import com.sistema.auth.repository.DepartamentoRepository;
 
 @Service
 public class DepartamentoService {
-    private final DepartamentoRepository departamentoRepository;  
-    private final ModelMapper modelMapper;
-    
-    public DepartamentoService(DepartamentoRepository departamentoRepository, ModelMapper modelMapper) {
+    private final DepartamentoRepository departamentoRepository;
+
+    public DepartamentoService(DepartamentoRepository departamentoRepository) {
         this.departamentoRepository = departamentoRepository;
-        this.modelMapper = modelMapper;
     }
 
     public DepartamentoDTO crear(DepartamentoDTO dto) {
         if (departamentoRepository.existsByNombre(dto.getNombre())) {
             throw new RuntimeException("Ya existe un departamento con ese nombre");
         }
-        Departamento depto = modelMapper.map(dto, Departamento.class);
-        return modelMapper.map(departamentoRepository.save(depto), DepartamentoDTO.class);
+
+        Departamento depto = new Departamento();
+        depto.setNombre(dto.getNombre());
+
+        Departamento guardado = departamentoRepository.save(depto);
+        return new DepartamentoDTO(guardado.getId(), guardado.getNombre());
     }
 
     public List<DepartamentoDTO> listarTodos() {
         return departamentoRepository.findAll()
                 .stream()
-                .map(dep -> modelMapper.map(dep, DepartamentoDTO.class))
+                .map(dep -> new DepartamentoDTO(dep.getId(), dep.getNombre()))
                 .collect(Collectors.toList());
     }
 
     public Optional<DepartamentoDTO> obtenerPorId(Long id) {
         return departamentoRepository.findById(id)
-                .map(dep -> modelMapper.map(dep, DepartamentoDTO.class));
+                .map(dep -> new DepartamentoDTO(dep.getId(), dep.getNombre()));
     }
 
     public DepartamentoDTO actualizar(Long id, DepartamentoDTO dto) {
         Departamento existente = departamentoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Departamento no encontrado"));
+
         existente.setNombre(dto.getNombre());
-        return modelMapper.map(departamentoRepository.save(existente), DepartamentoDTO.class);
+
+        Departamento actualizado = departamentoRepository.save(existente);
+        return new DepartamentoDTO(actualizado.getId(), actualizado.getNombre());
     }
 
     public void eliminar(Long id) {
@@ -54,5 +58,4 @@ public class DepartamentoService {
         }
         departamentoRepository.deleteById(id);
     }
-    
 }

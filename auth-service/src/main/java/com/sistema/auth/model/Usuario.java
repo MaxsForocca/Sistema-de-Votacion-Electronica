@@ -1,15 +1,8 @@
 package com.sistema.auth.model;
 
-//import jakarta.annotation.Generated;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Entity
@@ -26,11 +19,11 @@ public class Usuario {
     @NotBlank(message = "La contraseña no puede estar vacía")
     private String password;
 
-    @NotBlank(message = "El rol no puede estar vacío")
+    @NotNull(message = "El rol no puede estar vacío")
     @ManyToOne
-    private Rol rol; // Roles de usuario (Admin, Votante, etc.)
+    private Rol rol;
 
-    @NotBlank(message = "El departamento no puede estar vacío")
+    @NotNull(message = "El departamento no puede estar vacío")
     @ManyToOne
-    private Departamento departamento; // Relación con el departamento
+    private Departamento departamento;
 }
