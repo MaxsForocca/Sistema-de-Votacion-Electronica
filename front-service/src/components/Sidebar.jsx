@@ -67,7 +67,11 @@ const Sidebar = () => {
           <FaVoteYea className="sidebar-icon" />
           <span>Votaciones</span>
         </NavLink>
-        <NavLink to="/dashboard/invitaciones" className="sidebar-item">
+        <NavLink to="/dashboard/invitaciones" 
+          className={({ isActive }) =>
+              isActive ? 'sidebar-item selected' : 'sidebar-item'
+            }
+          >
           <FaEnvelope className="sidebar-icon" />
           <span>Invitaciones</span>
         </NavLink>

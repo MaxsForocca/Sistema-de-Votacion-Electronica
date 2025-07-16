@@ -5,6 +5,7 @@ const api = axios.create({
   baseURL: 'http://localhost:8084/documentos',
   headers: {
     'Content-Type': 'application/json',
+    'X-Visited-Nodes': '192.168.114.220'
   },
 });
 
