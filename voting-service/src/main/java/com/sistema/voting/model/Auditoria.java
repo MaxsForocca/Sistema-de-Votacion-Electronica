@@ -3,20 +3,26 @@ package com.sistema.voting.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
-@Table(name = "votos")
+@Table(name = "auditorias")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Voto {
+@Builder
+public class Auditoria {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String accion;
+
+    private String detalle;
+
     private Long usuarioId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "opcion_id")
-    private Opcion opcion;
+    @Builder.Default
+    private LocalDateTime fecha = LocalDateTime.now();
 }

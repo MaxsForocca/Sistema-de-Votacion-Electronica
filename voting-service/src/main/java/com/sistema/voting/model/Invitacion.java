@@ -4,11 +4,12 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "votos")
+@Table(name = "invitaciones")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Voto {
+@Builder
+public class Invitacion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +18,6 @@ public class Voto {
     private Long usuarioId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "opcion_id")
-    private Opcion opcion;
+    @JoinColumn(name = "votacion_id")
+    private Votacion votacion;
 }

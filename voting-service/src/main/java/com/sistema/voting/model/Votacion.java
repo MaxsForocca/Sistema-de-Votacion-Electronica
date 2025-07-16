@@ -1,16 +1,8 @@
 package com.sistema.voting.model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
+import lombok.*;
+
 import java.util.List;
 
 @Entity
@@ -24,15 +16,14 @@ public class Votacion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     private String titulo;
-
     private String descripcion;
-
-    
-    @NotBlank
     private Boolean activa;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "categoria_id")
+    private Categoria categoria;
+
     @OneToMany(mappedBy = "votacion", cascade = CascadeType.ALL)
-    private List<Voto> votos;
+    private List<Opcion> opciones;
 }
