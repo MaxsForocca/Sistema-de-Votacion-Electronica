@@ -171,56 +171,48 @@ const Votaciones = () => {
 
         {error && <div className="error-message">{error}</div>}
 
-        <div className="table-container">
-          <table className="crud-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Título</th>
-                <th>Descripción</th>
-                <th>Categoría</th>
-                <th>Estado</th>
-                <th>Preguntas</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {votaciones.map(votacion => (
-                <tr key={votacion.id}>
-                  <td>{votacion.id}</td>
-                  <td>{votacion.titulo}</td>
-                  <td>{votacion.descripcion?.substring(0, 50)}...</td>
-                  <td>{getCategoryName(votacion.categoriaId)}</td>
-                  <td>
-                    <span className={`status ${votacion.activa ? 'active' : 'inactive'}`}>
-                      {votacion.activa ? 'Activa' : 'Inactiva'}
-                    </span>
-                  </td>
-                  <td>{votacion.preguntas?.length || 0}</td>
-                  <td className="actions">
-                    <button 
-                      className="btn-view"
-                      onClick={() => handleView(votacion)}
-                    >
-                      <FaEye />
-                    </button>
-                    <button 
-                      className="btn-edit"
-                      onClick={() => handleEdit(votacion)}
-                    >
-                      <FaEdit />
-                    </button>
-                    <button 
-                      className="btn-delete"
-                      onClick={() => handleDelete(votacion.id)}
-                    >
-                      <FaTrash />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="card-grid">
+          {votaciones.map(votacion => (
+            <div className="card-item" key={votacion.id}>
+              <div className="card-header">
+                <div className="card-icon"><FaVoteYea className="icon-purple" /></div>
+                <span className="card-title">{votacion.titulo}</span>
+                <span className={`status ${votacion.activa ? 'active' : 'inactive'}`}>
+                  {votacion.activa ? 'Activa' : 'Inactiva'}
+                </span>
+              </div>
+
+              <div className="card-body">
+                <p><strong>Categoría:</strong> {getCategoryName(votacion.categoriaId)}</p>
+                <p><strong>Descripción:</strong> {votacion.descripcion}</p>
+
+                {votacion.preguntas && votacion.preguntas.length > 0 && (
+                  <div className="preguntas-preview-scroll">
+                    {votacion.preguntas.map((pregunta, pIndex) => (
+                      <div key={pIndex} className="pregunta-card black">
+                        <p className="pregunta-text">
+                          <FaQuestion className="icon-purple" /> {pregunta.texto}
+                        </p>
+                        <div className="opciones-botones">
+                          {pregunta.opciones?.map((opcion, oIndex) => (
+                            <div key={oIndex} className="opcion-btn">
+                              {opcion.texto}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="card-actions">
+                <button className="btn-view" onClick={() => handleView(votacion)}><FaEye /></button>
+                <button className="btn-edit" onClick={() => handleEdit(votacion)}><FaEdit /></button>
+                <button className="btn-delete" onClick={() => handleDelete(votacion.id)}><FaTrash /></button>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
