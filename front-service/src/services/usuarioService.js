@@ -32,7 +32,7 @@ export const obtenerUsuarioPorIdVoting = async (id) => {
 // Función: Listar todos los usuarios (ADMIN)
 export const listarUsuarios = async () => {
   try {
-    const response = await api.get('/');
+    const response = await api.get(''); // ✅ sin barra
     return response.data;
   } catch (error) {
     throw error.response?.data || 'Error al listar usuarios';
@@ -52,7 +52,7 @@ export const obtenerUsuarioPorId = async (id) => {
 // Función: Crear usuario
 export const crearUsuario = async (usuarioDTO) => {
   try {
-    const response = await api.post('/', usuarioDTO);
+    const response = await api.post('', usuarioDTO); // ✅ sin barra
     return response.data;
   } catch (error) {
     throw error.response?.data || 'Error al crear usuario';
