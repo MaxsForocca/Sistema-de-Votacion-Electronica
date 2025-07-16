@@ -3,8 +3,8 @@ package com.sistema.voting.dto;
 import lombok.Data;
 
 @Data
-public class VotoDTO {
+public class OpcionDTO {
     private Long id;
-    private Long usuarioId;
-    private Long opcionId;
+    private String texto;
+    private Long votacionId;
 }

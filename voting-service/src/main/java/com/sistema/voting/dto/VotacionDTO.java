@@ -1,13 +1,12 @@
 package com.sistema.voting.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class VotacionDTO {
-    private String pregunta;
+    private Long id;
+    private String titulo;
+    private String descripcion;
     private Boolean activa;
+    private Long categoriaId;
 }

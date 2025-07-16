@@ -3,20 +3,21 @@ package com.sistema.voting.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
-@Table(name = "votos")
+@Table(name = "categorias")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Voto {
+public class Categoria {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long usuarioId;
+    private String nombre;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "opcion_id")
-    private Opcion opcion;
+    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL)
+    private List<Votacion> votaciones;
 }
