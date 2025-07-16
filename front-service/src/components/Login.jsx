@@ -15,26 +15,26 @@ export const Login = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    const resultado = await loginUsuario(formData.username, formData.password);
-    console.log("✅ Sesión iniciada:", resultado);
+    e.preventDefault();
+    try {
+      const resultado = await loginUsuario(formData.username, formData.password);
+      console.log("✅ Sesión iniciada:", resultado);
 
-    // Guarda en localStorage si deseas mantener sesión
-    localStorage.setItem("usuario", JSON.stringify(resultado));
+      // Guarda en localStorage si deseas mantener sesión
+      localStorage.setItem("usuario", JSON.stringify(resultado));
 
-    // Redirige según el rol
-    if (resultado.rol === "ADMIN") {
-      navigate("/dashboard");
-    } else if (resultado.rol === "VOTANTE") {
-      navigate("/home"); // o crea una ruta específica como /votar
-    } else {
-      setMensaje("Rol no autorizado");
+      // Redirige según el rol
+      if (resultado.rol === "ADMIN") {
+        navigate("/dashboard");
+      } else if (resultado.rol === "VOTANTE") {
+        navigate("/mis-votaciones"); // Corregido: ahora va a mis-votaciones
+      } else {
+        setMensaje("Rol no autorizado");
+      }
+    } catch (error) {
+      setMensaje(error);
     }
-  } catch (error) {
-    setMensaje(error);
-  }
-};
+  };
 
   const handleInputChange = (e) => {
     setFormData({
@@ -53,7 +53,7 @@ export const Login = () => {
           </div>
           <div className="brand-message">
             <h2 className="brand-title">Sistema de Votación</h2>
-            <p className="brand-subtitle">Vota seguro</p>
+            <p className="brand-subtitle">Vota seguro y transparente</p>
           </div>
         </div>
 
@@ -76,7 +76,7 @@ export const Login = () => {
                 value={formData.username}
                 onChange={handleInputChange}
                 className="input"
-                placeholder="Enter your username"
+                placeholder="Ingresa tu nombre de usuario"
               />
             </div>
 
@@ -91,22 +91,35 @@ export const Login = () => {
                   value={formData.password}
                   onChange={handleInputChange}
                   className="input"
-                  placeholder="Enter your password"
+                  placeholder="Ingresa tu contraseña"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="password-toggle"
                 >
-                  {/* SVG íconos */}
+                  {showPassword ? "🙈" : "👁️"}
                 </button>
               </div>
             </div>
 
-            {mensaje && <p className="login-message">{mensaje}</p>}
+            {mensaje && (
+              <div className={`login-message ${typeof mensaje === 'string' && mensaje.includes('exitoso') ? 'success' : 'error'}`}>
+                {mensaje}
+              </div>
+            )}
 
-            <button type="submit" className="submit-button">Sign In</button>
+            <button type="submit" className="submit-button">
+              Iniciar Sesión
+            </button>
           </form>
+
+          {/* Información de usuarios demo */}
+          <div className="demo-info">
+            <h4>Usuarios de prueba:</h4>
+            <p><strong>Admin:</strong> admin / admin</p>
+            <p><strong>Votante:</strong> user / user</p>
+          </div>
         </div>
       </div>
     </div>

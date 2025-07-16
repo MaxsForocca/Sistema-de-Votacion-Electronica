@@ -6,6 +6,7 @@ import {
   FaUsers,
   FaMapMarkedAlt,
   FaTags,
+  FaEnvelope,
   FaClipboardCheck,
   FaFilePdf
 } from 'react-icons/fa';
@@ -40,6 +41,10 @@ const Sidebar = () => {
         <NavLink to="/dashboard/votaciones" className="sidebar-item">
           <FaVoteYea className="sidebar-icon" />
           <span>Votaciones</span>
+        </NavLink>
+        <NavLink to="/dashboard/invitaciones" className="sidebar-item">
+          <FaEnvelope className="sidebar-icon" />
+          <span>Invitaciones</span>
         </NavLink>
         <NavLink to="/dashboard/auditoria" className="sidebar-item">
           <FaClipboardCheck className="sidebar-icon" />
