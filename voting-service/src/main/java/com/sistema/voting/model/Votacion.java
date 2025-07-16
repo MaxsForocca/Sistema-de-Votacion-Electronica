@@ -24,6 +24,9 @@ public class Votacion {
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;
 
-    @OneToMany(mappedBy = "votacion", cascade = CascadeType.ALL)
-    private List<Opcion> opciones;
+    @OneToMany(mappedBy = "votacion", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Pregunta> preguntas;
+
+    @OneToMany(mappedBy = "votacion", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Invitacion> invitaciones;
 }

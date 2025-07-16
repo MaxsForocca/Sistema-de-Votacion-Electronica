@@ -6,11 +6,11 @@ import lombok.*;
 import java.util.List;
 
 @Entity
-@Table(name = "opciones")
+@Table(name = "preguntas")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Opcion {
+public class Pregunta {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,9 +19,12 @@ public class Opcion {
     private String texto;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pregunta_id", nullable = false)
-    private Pregunta pregunta;
+    @JoinColumn(name = "votacion_id")
+    private Votacion votacion;
 
-    @OneToMany(mappedBy = "opcion", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "pregunta", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Opcion> opciones;
+
+    @OneToMany(mappedBy = "pregunta", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Voto> votos;
 }

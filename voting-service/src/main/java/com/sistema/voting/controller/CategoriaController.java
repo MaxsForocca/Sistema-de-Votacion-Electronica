@@ -35,4 +35,24 @@ public class CategoriaController {
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> actualizar(@PathVariable Long id, @RequestBody CategoriaDTO dto) {
+        try {
+            CategoriaDTO actualizada = categoriaService.actualizarCategoria(id, dto);
+            return ResponseEntity.ok(actualizada);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> eliminar(@PathVariable Long id) {
+        try {
+            categoriaService.eliminarCategoria(id);
+            return ResponseEntity.ok("Categoría eliminada correctamente.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
+    }
 }

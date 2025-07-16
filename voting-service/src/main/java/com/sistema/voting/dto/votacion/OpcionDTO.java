@@ -1,4 +1,4 @@
-package com.sistema.voting.dto;
+package com.sistema.voting.dto.votacion;
 
 import lombok.Data;
 
@@ -6,5 +6,4 @@ import lombok.Data;
 public class OpcionDTO {
     private Long id;
     private String texto;
-    private Long preguntaId;
 }

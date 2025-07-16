@@ -6,6 +6,7 @@ import com.sistema.voting.model.Invitacion;
 import com.sistema.voting.model.Votacion;
 import com.sistema.voting.repository.InvitacionRepository;
 import com.sistema.voting.repository.VotacionRepository;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -52,5 +53,12 @@ public class InvitacionService {
             dto.setActiva(v.getActiva());
             return dto;
         }).collect(Collectors.toList());
+    }
+
+    public void eliminarInvitacion(Long id) {
+        Invitacion invitacion = invitacionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Invitación no encontrada con id: " + id));
+
+        invitacionRepository.delete(invitacion);
     }
 }

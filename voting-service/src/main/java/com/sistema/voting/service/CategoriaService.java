@@ -67,4 +67,25 @@ public class CategoriaService {
             return dto;
         }).collect(Collectors.toList());
     }
+
+    public CategoriaDTO actualizarCategoria(Long id, CategoriaDTO dto) {
+        Categoria categoria = categoriaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Categoría no encontrada con id: " + id));
+
+        categoria.setNombre(dto.getNombre());
+        Categoria actualizada = categoriaRepository.save(categoria);
+
+        CategoriaDTO actualizadoDTO = new CategoriaDTO();
+        actualizadoDTO.setId(actualizada.getId());
+        actualizadoDTO.setNombre(actualizada.getNombre());
+
+        return actualizadoDTO;
+    }
+
+    public void eliminarCategoria(Long id) {
+        Categoria categoria = categoriaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Categoría no encontrada con id: " + id));
+
+        categoriaRepository.delete(categoria);
+    }
 }
