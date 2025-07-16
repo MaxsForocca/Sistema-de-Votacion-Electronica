@@ -1,3 +1,5 @@
+/* Transporte de datos entre capas para usuario */
+
 package com.sistema.auth.dto;
 
 import lombok.AllArgsConstructor;
@@ -7,9 +9,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UsuarioDTO {
+public class RegisterDTO {
     private String username;
     private String password;
-    private Long idRol; // Representa o papel do usurio (VOTANTE, ADMIN, etc.)
-    private Long idDepartamento; // Representa o departamento ao que pertence o usurio
+    //private Long idDepartamento; // Representa el departamento al que pertenece el usuario
 }

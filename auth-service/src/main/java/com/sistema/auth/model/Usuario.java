@@ -26,11 +26,11 @@ public class Usuario {
     @NotBlank(message = "La contraseña no puede estar vacía")
     private String password;
 
-    /* 
-    @NotBlank(message = "El nombre de usuario no puede estar vacío")
-    @Column(unique = true)
-    private String email;
-    */
+    @NotBlank(message = "El rol no puede estar vacío")
     @ManyToOne
     private Rol rol; // Roles de usuario (Admin, Votante, etc.)
+
+    @NotBlank(message = "El departamento no puede estar vacío")
+    @ManyToOne
+    private Departamento departamento; // Relación con el departamento
 }
