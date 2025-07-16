@@ -1,5 +1,8 @@
+// src/components/Login.jsx
 import { useState } from "react";
+import { loginUsuario } from "../services/usuarioService";
 import "../styles/login.css";
+import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -8,11 +11,30 @@ export const Login = () => {
     password: "",
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Login attempt:", formData);
-    // Aquí puedes agregar la lógica de autenticación
-  };
+  const [mensaje, setMensaje] = useState(null); // Para mostrar errores o confirmación
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const resultado = await loginUsuario(formData.username, formData.password);
+    console.log("✅ Sesión iniciada:", resultado);
+
+    // Guarda en localStorage si deseas mantener sesión
+    localStorage.setItem("usuario", JSON.stringify(resultado));
+
+    // Redirige según el rol
+    if (resultado.rol === "ADMIN") {
+      navigate("/dashboard");
+    } else if (resultado.rol === "VOTANTE") {
+      navigate("/home"); // o crea una ruta específica como /votar
+    } else {
+      setMensaje("Rol no autorizado");
+    }
+  } catch (error) {
+    setMensaje(error);
+  }
+};
 
   const handleInputChange = (e) => {
     setFormData({
@@ -29,7 +51,6 @@ export const Login = () => {
           <div className="brand-content">
             <div className="brand-logo">VOTE NOW</div>
           </div>
-
           <div className="brand-message">
             <h2 className="brand-title">Sistema de Votación</h2>
             <p className="brand-subtitle">Vota seguro</p>
@@ -40,15 +61,13 @@ export const Login = () => {
         <div className="right-panel">
           <div className="header">
             <h1 className="title">Bienvenido a VOTE NOW!</h1>
-            <p className="subtitle">Ingresa tus datos para iniar sesión</p>
+            <p className="subtitle">Ingresa tus datos para iniciar sesión</p>
           </div>
 
           {/* Login Form */}
           <form onSubmit={handleSubmit} className="form">
             <div className="form-group">
-              <label htmlFor="username" className="label">
-                Username
-              </label>
+              <label htmlFor="username" className="label">Username</label>
               <input
                 id="username"
                 name="username"
@@ -62,9 +81,7 @@ export const Login = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="password" className="label">
-                Password
-              </label>
+              <label htmlFor="password" className="label">Password</label>
               <div className="password-container">
                 <input
                   id="password"
@@ -81,38 +98,14 @@ export const Login = () => {
                   onClick={() => setShowPassword(!showPassword)}
                   className="password-toggle"
                 >
-                  {showPassword ? (
-                    <svg className="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"
-                      />
-                    </svg>
-                  ) : (
-                    <svg className="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                      />
-                    </svg>
-                  )}
+                  {/* SVG íconos */}
                 </button>
               </div>
             </div>
 
-            <button type="submit" className="submit-button">
-              Sign In
-            </button>
+            {mensaje && <p className="login-message">{mensaje}</p>}
+
+            <button type="submit" className="submit-button">Sign In</button>
           </form>
         </div>
       </div>

@@ -18,6 +18,7 @@ import com.sistema.auth.model.Rol;
 import com.sistema.auth.model.Usuario;
 import com.sistema.auth.repository.UsuarioRepository;
 import com.sistema.auth.dto.LoginDTO;
+import com.sistema.auth.dto.LoginResponseDTO;
 //import com.sistema.auth.model.Usuario;
 import com.sistema.auth.service.UsuarioService;
 
@@ -37,23 +38,40 @@ public class UsuarioController {
     private UsuarioRepository usuarioRepository;
     
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDTO credenciales) {
-        try{
-            System.out.println("Username recibido: " + credenciales.getUsername());
-            System.out.println("Password recibido: " + credenciales.getPassword());
+public ResponseEntity<?> login(@RequestBody LoginDTO credenciales) {
+    try {
+        System.out.println("Username recibido: " + credenciales.getUsername());
+        System.out.println("Password recibido: " + credenciales.getPassword());
 
-            boolean result = usuarioService.autenticar(credenciales);
-            if (!result) {
-                // Si las credenciales son incorrectas, se retorna un mensaje de error
-                return ResponseEntity.status(401).body("Credenciales incorrectas");
-            } else {
-                return ResponseEntity.ok("Inicio de sesión exitoso");
-            }    
-        } catch (Exception e) {
-            // Si ocurre un error, se retorna un mensaje de error
-            return ResponseEntity.status(401).body("Error al iniciar sesión: " + e.getMessage());
+        boolean autenticado = usuarioService.autenticar(credenciales);
+
+        if (!autenticado) {
+            return ResponseEntity.status(401).body("Credenciales incorrectas");
         }
-    }  
+
+        // Obtener el usuario autenticado desde base de datos
+        Usuario usuario = usuarioService.buscarPorUsername(credenciales.getUsername());
+
+        if (usuario == null) {
+            return ResponseEntity.status(404).body("Usuario no encontrado");
+        }
+
+        String rol = (usuario.getRol() != null) ? usuario.getRol().getRol() : "SIN_ROL";
+
+        LoginResponseDTO respuesta = new LoginResponseDTO(
+            usuario.getId(),
+            usuario.getUsername(),
+            rol,
+            "Inicio de sesión exitoso"
+        );
+
+        return ResponseEntity.ok(respuesta);
+
+    } catch (Exception e) {
+        return ResponseEntity.status(500).body("Error al iniciar sesión: " + e.getMessage());
+    }
+}
+
     
     // obtener usuario por id para Votacion
     @GetMapping("/{id}")

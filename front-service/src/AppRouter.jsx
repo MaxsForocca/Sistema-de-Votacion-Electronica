@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import DashboardPage from "./pages/DashboardPage";
+import MisVotacionesPage from "./pages/MisVotacionesPage";
 
 // Subpáginas del dashboard
 import Inicio from "./pages/dashboard/Inicio";
@@ -20,6 +21,7 @@ export default function AppRouter() {
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/home" element={<HomePage />} />
+        <Route path="/mis-votaciones" element={<MisVotacionesPage />} />
 
         <Route path="/dashboard" element={<DashboardPage />}>
           <Route path="inicio" element={<Inicio />} />

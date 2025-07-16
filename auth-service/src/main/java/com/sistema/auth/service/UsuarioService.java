@@ -140,5 +140,11 @@ public class UsuarioService {
             usuario.getDepartamento() != null ? usuario.getDepartamento().getId() : null
         );
     }
+
+        // UsuarioService.java
+    public Usuario buscarPorUsername(String username) {
+        return usuarioRepository.findByUsername(username).orElse(null);
+    }
+
 }
 
