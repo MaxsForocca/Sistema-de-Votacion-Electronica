@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import com.sistema.auth.dto.UsuarioDTO;
 import com.sistema.auth.dto.UsuarioVoting;
+import com.sistema.auth.model.Rol;
 import com.sistema.auth.model.Usuario;
 import com.sistema.auth.repository.UsuarioRepository;
 import com.sistema.auth.dto.LoginDTO;
@@ -79,11 +80,14 @@ public class UsuarioController {
         if (user.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        // Permite votar solo a VOTANTES
-        if (!"VOTANTE".equalsIgnoreCase(user.get().getRol().getRol())){
-            return ResponseEntity.notFound().build();
-        }
-        UsuarioVoting dto = modelMapper.map(user.get(), UsuarioVoting.class);
+        
+        Rol rol = user.get().getRol();
+
+        UsuarioVoting dto = new UsuarioVoting(
+            user.get().getId(),
+            user.get().getUsername(),
+            rol != null ? rol.getRol() : "SIN_ROL"
+        );
         return ResponseEntity.ok(dto);
     }
     

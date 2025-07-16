@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class UsuarioVoting {
     private String username;
     private String password;
+    private String rol; // Representa o papel do usurio (VOTANTE, ADMIN, etc.)
 }
