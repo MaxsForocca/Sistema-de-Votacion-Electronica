@@ -12,5 +12,5 @@ import com.sistema.auth.model.Rol;
 public class UsuarioVoting {
     private Long id;
     private String username;
-    private String rol;
+    private String rol; // Representa o papel do usurio (VOTANTE, ADMIN, etc.)
 }
